@@ -7,11 +7,10 @@
   hardware.enableRedistributableFirmware = true;
 
   networking = {
-    hostId = "TODO";
+    hostId = "9bdce388";
     hostName = "schwarzeshackertool";
-    # TODO
-    # interfaces.enp3s0.useDHCP = true;
-    # interfaces.wlp4s0.useDHCP = true;
+    interfaces.enp0s31f6.useDHCP = true;
+    interfaces.wlp58s0.useDHCP = true;
     networkmanager.enable = true;
   };
 
@@ -47,7 +46,7 @@
 
   services.thermald.enable = true;
 
-  home-manager.users.philm.services.cbatticon = {
+  home-manager.users.robert.services.cbatticon = {
     enable = true;
     commandCriticalLevel = ''notify-send "battery critical!"'';
   };

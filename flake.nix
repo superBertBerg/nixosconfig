@@ -47,7 +47,7 @@
           {
             home-manager.useUserPackages = true;
             home-manager.useGlobalPkgs = true;
-            home-manager.users.philm = {
+            home-manager.users.robert = {
               imports = builtins.attrValues homeManagerModules;
               programs.home-manager.enable = true;
               modules.cli.enable = true;
