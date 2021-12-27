@@ -32,7 +32,7 @@
         ssh = import ./home/modules/cli/ssh.nix { };
         starship = import ./home/modules/cli/starship.nix { };
         tmux = import ./home/modules/cli/tmux.nix { };
-        gui = import ./home/modules/gui { }; # enables all modules in the gui directory + small extra ones
+        gui = import ./home/modules/gui { inherit nixpkgs-unstable; }; # enables all modules in the gui directory + small extra ones
         firefox = import ./home/modules/gui/firefox.nix { };
         alacritty = import ./home/modules/gui/alacritty { };
         desktop-environment = import ./home/modules/gui/desktop-environment { };
