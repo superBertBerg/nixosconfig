@@ -13,7 +13,7 @@
         };
         custom_cursor_colors = false;
         background_opacity = builtins.fromJSON alpha;
-        font.size = 18;
+        font.size = 14;
         font.normal.family = fontname;
         font.ligatures = true;
         colors = with config.theme.base16.colors; {
