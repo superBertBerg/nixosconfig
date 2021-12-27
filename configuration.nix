@@ -269,5 +269,5 @@
     xclip
   ];
 
-  # fonts.fonts = with pkgs; [ nerdfonts google-fonts ];
+  fonts.fonts = with pkgs; [ nerdfonts google-fonts ];
 }
