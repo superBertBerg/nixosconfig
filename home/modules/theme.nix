@@ -24,7 +24,7 @@ let inherit (lib) concatStrings mapAttrsToList mkOption types; in
         xftfontextra = ":style=Regular";
         fontsize = "16";
         xcursorSize = "32";
-        dpi = "100";
+        dpi = "125";
         alpha = "0.85"; # background alpha for applications that support it
       };
     };
