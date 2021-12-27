@@ -25,8 +25,8 @@
         # package/dependency management
         nx = "NIXPKGS_ALLOW_UNFREE=1 nix-shell --command fish";
         nxd = "NIXPKGS_ALLOW_UNFREE=1 nix develop --command fish";
-        upgrade = "nix flake update /home/robert/dev/personal/nixos-config/ && sudo nixos-rebuild switch --flake /home/robert/dev/personal/nixos-config/";
-        update = "sudo nixos-rebuild switch --flake /home/robert/dev/personal/nixos-config/";
+        upgrade = "nix flake update /home/robert/dev/personal/nixosconfig/ && sudo nixos-rebuild switch --flake /home/robert/dev/personal/nixosconfig/";
+        update = "sudo nixos-rebuild switch --flake /home/robert/dev/personal/nixosconfig/";
         # shortcuts for changing the directory
         cdate = "date +%Y%m%d%H%M";
         # useful shortcuts

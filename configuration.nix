@@ -122,11 +122,11 @@
     # Enable touchpad support.
     libinput.enable = true;
     # Use session defined in home.nix
-    # displayManager = {
-    #   defaultSession = "none+xmonad";
-    #   # this prevents accidentally turned on caps lock in the login manager (as it is remapped in the xmonad session to escape)
-    #   sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap -e 'clear Lock'";
-    # };
+    displayManager = {
+      defaultSession = "none+i3";
+      # this prevents accidentally turned on caps lock in the login manager (as it is remapped in the xmonad session to escape)
+      sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap -e 'clear Lock'";
+    };
   };
 
   # gtk themes (home-manager more specifically) seem to have problems without it
