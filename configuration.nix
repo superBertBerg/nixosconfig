@@ -127,6 +127,18 @@
       # this prevents accidentally turned on caps lock in the login manager (as it is remapped in the xmonad session to escape)
       sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap -e 'clear Lock'";
     };
+    windowManager = {
+      session = [
+        {
+          name = "i3";
+          bgSupport = true;
+          start = ''
+            ${pkgs.runtimeShell} $HOME/.xsession &
+            waitPID=$!
+          '';
+        }
+      ];
+    };
   };
 
   # gtk themes (home-manager more specifically) seem to have problems without it
