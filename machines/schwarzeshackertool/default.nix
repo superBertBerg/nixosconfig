@@ -16,6 +16,13 @@
 
   # ZFS related
   services.zfs.autoScrub.enable = true;
+  # Against Tearing
+  services.picom =
+    {
+      enable = true;
+      vSync = true;
+      experimentalBackends = true;
+    };
   # services.sanoid =
   #   let
   #     # templates not working correctly because of kinda broken sanoid config

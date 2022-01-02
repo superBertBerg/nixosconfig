@@ -6,7 +6,8 @@
 
   config = lib.mkIf config.modules.gui.desktop-environment.enable {
     home.keyboard.layout = "us";
-
+    services.picom.enable = true;
+    services.picom.vSync = true;
     xsession = {
       enable = true;
 
