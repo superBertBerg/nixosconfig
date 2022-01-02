@@ -232,6 +232,7 @@
     signal-desktop
     unstable.tdesktop
     discord
+    teams
     v4l-utils
 
     # WEB
