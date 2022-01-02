@@ -11,7 +11,12 @@
     hostName = "schwarzeshackertool";
     interfaces.enp0s31f6.useDHCP = true;
     interfaces.wlp58s0.useDHCP = true;
+  
     networkmanager.enable = true;
+    # may result in problems in networks that require a login page
+    networkmanager.dns = "none";
+    nameservers = [ "1.1.1.1"];
+  
   };
 
   # ZFS related
@@ -20,7 +25,8 @@
   services.picom =
     {
       enable = true;
-      vSync = true;
+      backend = "glx";
+      # vSync = true;
       experimentalBackends = true;
     };
   # services.sanoid =

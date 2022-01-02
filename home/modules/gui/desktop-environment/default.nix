@@ -6,8 +6,7 @@
 
   config = lib.mkIf config.modules.gui.desktop-environment.enable {
     home.keyboard.layout = "us";
-    services.picom.enable = true;
-    services.picom.vSync = true;
+
     xsession = {
       enable = true;
 
@@ -30,12 +29,50 @@
               "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 firefox";
               "${mod}+Return" = "exec alacritty";
             };
+            colors = with config.theme.base16.colors; {
+              focused = {
+                background = "#${base01.hex.rgb}";
+                border = "#${base0D.hex.rgb}";
+                childBorder = "#${base0C.hex.rgb}";
+                indicator = "#${base09.hex.rgb}";
+                text = "#${base07.hex.rgb}";
+              };
+              focusedInactive = {
+                background = "#${base00.hex.rgb}";
+                border = "#${base02.hex.rgb}";
+                childBorder = "#${base00.hex.rgb}";
+                indicator = "#${base09.hex.rgb}";
+                text = "#${base07.hex.rgb}";
+              };
+              unfocused = {
+                background = "#${base00.hex.rgb}";
+                border = "#${base02.hex.rgb}";
+                childBorder = "#${base00.hex.rgb}";
+                indicator = "#${base09.hex.rgb}";
+                text = "#${base07.hex.rgb}";
+              };
+            };
             bars = [
               {
                 position = "bottom";
                 statusCommand = "i3status-rs ~/.config/i3status-rust/config-bottom.toml";
                 colors = with config.theme.base16.colors; {
                   background = "#${base00.hex.rgb}";
+                  activeWorkspace = {
+                    background = "#${base00.hex.rgb}";
+                    border = "#${base0D.hex.rgb}";
+                    text = "#${base07.hex.rgb}";
+                  };
+                  focusedWorkspace = {
+                    background = "#${base00.hex.rgb}";
+                    border = "#${base0D.hex.rgb}";
+                    text = "#${base07.hex.rgb}";
+                  };
+                  inactiveWorkspace = {
+                    background = "#${base00.hex.rgb}";
+                    border = "#${base02.hex.rgb}";
+                    text = "#${base03.hex.rgb}";
+                  };
                 };
                 fonts = with config.theme.extraParams; {
                   names = [ fontname ];
@@ -49,9 +86,6 @@
     };
     programs.i3status-rust = with config.theme.base16.colors; {
       enable = true;
-
-
-
       bars.bottom = {
         blocks = [
           {
