@@ -223,6 +223,7 @@
     zip
     unrar
     p7zip
+    ranger
 
     # AUDIO
     pavucontrol
@@ -257,6 +258,7 @@
     appimage-run
     powertop
     usbutils
+    libreoffice
     patchelf
     memtester
     docker-compose
