@@ -32,7 +32,6 @@
 
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
-
   hardware.opengl = {
     enable = true;
     # Enable 32-bit dri support for steam
@@ -112,8 +111,7 @@
   };
 
   # Enable the X11 windowing system.
-
-  # services.autorandr.enable = true;
+  services.autorandr.enable = true;
 
   services.xserver = {
     enable = true;
@@ -168,6 +166,7 @@
       "wheel" # Enable ‘sudo’ for the user.
       "docker"
     ];
+    # openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDG/win3mLJzRYDTiMDBRaTQxOXugxEz9WOoaGlTnUm4eQrwNt+WFMoE9keiGyx0/107XqfQMaAE2PBvUEPL5R5CD9H04AVXTjD1Eo7/3rTi5nZPq9pwXhWNvzoqGYAZWT+NDUOn1aJTCQ4a1xPU7gmOSd6e2GPSy+TbqN+CWVf1vbNVTrGJpMqcu4cIA163mFwC8X+cbtYt3ZL7ZwTx9V9WWDrrOwKKUorRx4Ek6NC0/SC0pcvLNCOArKfsFPdL32/pL+HBW19T9w2nhSalkEgTHRFX+dPliEmwGGEGsJTDwABZCdAyArmLReksputEl14Q/2+I2UAWgzRbkoeVEHcOJ05+vM1lnHa/fnocrExMSbNjW6RhHe4jiTqYCl1i2Kq3v8F//AF+DZlJOVSf9m0/doPA2PdJssAN4IBsRj6tWkjoA94EODGTsSntW36YCDduWu4k8iVtEwTkaEJ/Y71cw2ds2tYhTYqmgaI3JblciWnndrxzklRNi1cxBIyUUn52W1mhv1GIWOIvnOFHrJU+i81+muQXkpuoIkB1hbLkTCpbx6uLuuu18eqWx8In0/L9dkh1LjJ1n5aXMr26F5xeOSewNUQglXYxcbevDL1lBW9sYL0eizNHVsI7xl/q7rxgQb1gKcfqZNpIBZvmHai20TgW1eP9T8H070nI6FJuQ== philm@philipp-m.com"];
   };
   # users.extraGroups.vboxusers.members = [ "robert" ];
 
@@ -206,6 +205,7 @@
     nodejs_latest
     rustup
     steam-run
+    dbeaver
 
     # TERMINAL/CLI
     file
@@ -224,6 +224,8 @@
     unrar
     p7zip
     ranger
+    unstable.hasura-cli
+    unstable.hasura-graphql-engine
 
     # AUDIO
     pavucontrol
@@ -239,6 +241,8 @@
     # WEB
     chromium
     firefox
+    google-chrome
+    tor-browser-bundle-bin
 
     # XORG/DESKTOP ENVIRONMENT
     dmenu
@@ -248,6 +252,7 @@
     xorg.xmessage
     xorg.xkill
     xorg.xwininfo
+    arandr
 
     # MISC
     exfat-utils
