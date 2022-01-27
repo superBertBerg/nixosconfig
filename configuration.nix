@@ -139,6 +139,19 @@
     };
   };
 
+  # Thunderbolt section
+  # services.udev.extraRules = ''ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"'';
+  # services.hardware.bolt.enable = true;
+  # hardware.nvidia.modesetting.enable = true;
+  # hardware.nvidia.prime.sync.enable = true;
+  # hardware.nvidia.prime.sync.allowExternalGpu = true;
+  # hardware.nvidia.prime.offload.enable = true;
+  # hardware.nvidia.prime.nvidiaBusId = "PCI:6:0:3";
+  # hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
+  # services.xserver.videoDrivers = ["nvidia"];
+  services.xserver.videoDrivers = ["intel"];
+  # boot.blacklistedKernelModules = [ "nouveau" "nvidiafb"];
+
   # gtk themes (home-manager more specifically) seem to have problems without it
   services.dbus.packages = [ pkgs.gnome3.dconf ];
   programs.dconf.enable = true;
@@ -253,6 +266,7 @@
     xorg.xkill
     xorg.xwininfo
     arandr
+    feh
 
     # MISC
     exfat-utils
