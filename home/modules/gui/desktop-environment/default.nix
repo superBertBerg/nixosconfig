@@ -26,7 +26,8 @@
             };
             keybindings = lib.mkOptionDefault {
               "${mod}+space" = "exec rofi -show run";
-              "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 firefox";
+              # "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 firefox";
+              "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 chromium";
               "${mod}+Return" = "exec alacritty";
             };
             colors = with config.theme.base16.colors; {
@@ -152,25 +153,25 @@
       };
     };
 
-    # xdg.mimeApps = {
-    #   enable = true;
-    #   defaultApplications = {
-    #     "application/pdf" = "org.pwmt.zathura.desktop";
-    #     "image/png" = "feh.desktop";
-    #     "image/jpeg" = "feh.desktop";
-    #     "video/x-matroska" = "mpv.desktop";
-    #     "video/mp4" = "mpv.desktop";
-    #     "video/webm" = "mpv.desktop";
-    #     "text/html" = "firefox.desktop";
-    #     "x-scheme-handler/http" = "firefox.desktop";
-    #     "x-scheme-handler/https" = "firefox.desktop";
-    #     "x-scheme-handler/about" = "firefox.desktop";
-    #     "x-scheme-handler/unknown" = "firefox.desktop";
-    #   };
-    # };
+    xdg.mimeApps = {
+      enable = true;
+      defaultApplications = {
+        # "application/pdf" = "org.pwmt.zathura.desktop";
+        "image/png" = "feh.desktop";
+        "image/jpeg" = "feh.desktop";
+        # "video/x-matroska" = "mpv.desktop";
+        # "video/mp4" = "mpv.desktop";
+        # "video/webm" = "mpv.desktop";
+        "text/html" = "chromium-browser.desktop";
+        "x-scheme-handler/http" = "chromium-browser.desktop";
+        "x-scheme-handler/https" = "chromium-browser.desktop";
+        "x-scheme-handler/about" = "chromium-browser.desktop";
+        "x-scheme-handler/unknown" = "chromium-browser.desktop";
+      };
+    };
 
     # some app overwrites mimeapps all the time...
-    # xdg.configFile."mimeapps.list".force = true;
+    xdg.configFile."mimeapps.list".force = true;
 
     xresources.properties = with config.theme.base16.colors;
       with config.theme.extraParams; {

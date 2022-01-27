@@ -9,11 +9,12 @@
       userEmail = "superbertberg@gmail.com";
       lfs.enable = true;
       delta.enable = true;
-      # extraConfig = {
-      #   pull.rebase = true;
-      #   rebase.autostash = true;
-      #   rerere.enabled = true;
-      # };
+      extraConfig = {
+        pull.rebase = false;
+        core.editor = "code";
+        # rebase.autostash = true;
+        # rerere.enabled = true;
+      };
       # extraConfig.init.defaultBranch = "main";
       # aliases = {
       #   pushall = "!git remote | xargs -L1 git push --all";
