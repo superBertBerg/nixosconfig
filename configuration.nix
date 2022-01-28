@@ -239,6 +239,7 @@
     ranger
     unstable.hasura-cli
     unstable.hasura-graphql-engine
+    ventoy-bin
 
     # AUDIO
     pavucontrol

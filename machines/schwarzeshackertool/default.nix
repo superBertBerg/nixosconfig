@@ -14,7 +14,7 @@
   
     networkmanager.enable = true;
     # may result in problems in networks that require a login page
-    networkmanager.dns = "none";
+    # networkmanager.dns = "none";\
     nameservers = [ "1.1.1.1"];
   
   };
