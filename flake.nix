@@ -70,6 +70,10 @@
           path = ./machines/schwarzeshackertool;
           overlays = [ ] ++ (import ./machines/schwarzeshackertool/overlays.nix { inherit nixpkgs-unstable; });
         };
+        schwarzerhackerstein = mkHost {
+          path = ./machines/schwarzerhackerstein;
+          overlays = [ ] ++ (import ./machines/schwarzerhackerstein/overlays.nix { inherit nixpkgs-unstable; });
+        };
       };
     };
 }
