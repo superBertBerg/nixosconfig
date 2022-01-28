@@ -27,7 +27,7 @@
             keybindings = lib.mkOptionDefault {
               "${mod}+space" = "exec rofi -show run";
               # "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 firefox";
-              "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 chromium";
+              "${mod}+c" = "exec chromium";
               "${mod}+Return" = "exec alacritty";
             };
             colors = with config.theme.base16.colors; {
