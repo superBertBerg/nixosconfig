@@ -18,7 +18,7 @@
     nameservers = [ "1.1.1.1"];
   
   };
-
+  services.xserver.videoDrivers = ["intel"];
   # ZFS related
   services.zfs.autoScrub.enable = true;
   # Against Tearing
