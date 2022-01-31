@@ -149,7 +149,7 @@
   # hardware.nvidia.prime.nvidiaBusId = "PCI:6:0:3";
   # hardware.nvidia.prime.intelBusId = "PCI:0:2:0";
   # services.xserver.videoDrivers = ["nvidia"];
-  services.xserver.videoDrivers = ["intel"];
+  # services.xserver.videoDrivers = ["intel"];
   # boot.blacklistedKernelModules = [ "nouveau" "nvidiafb"];
 
   # gtk themes (home-manager more specifically) seem to have problems without it
@@ -268,6 +268,7 @@
     xorg.xwininfo
     arandr
     feh
+    pcmanfm
 
     # MISC
     exfat-utils
@@ -290,6 +291,7 @@
     rage
     imagemagick
     xclip
+    gparted
   ];
 
   fonts.fonts = with pkgs; [ nerdfonts google-fonts ];
