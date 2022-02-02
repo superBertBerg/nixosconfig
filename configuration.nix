@@ -17,7 +17,7 @@
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
-
+  boot.extraModprobeConfig = "options hid_apple fnmode=0";
   # boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
   # boot.kernelModules = [ "v4l2loopback" ];
 
@@ -240,6 +240,8 @@
     unstable.hasura-cli
     unstable.hasura-graphql-engine
     ventoy-bin
+    hdparm
+    woeusb
 
     # AUDIO
     pavucontrol
