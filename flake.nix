@@ -1,6 +1,6 @@
 {
   inputs = {
-    nixpkgs.url = "github:NixOS/nixpkgs/nixos-21.11";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-23.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     agenix = {
       url = "github:ryantm/agenix";
@@ -8,7 +8,7 @@
     };
     rycee-nur-expressions = { url = "gitlab:rycee/nur-expressions"; flake = false; };
     home-manager = {
-      url = "github:nix-community/home-manager/release-21.11";
+      url = "github:nix-community/home-manager/release-23.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -48,6 +48,7 @@
             home-manager.useUserPackages = true;
             home-manager.useGlobalPkgs = true;
             home-manager.users.robert = {
+              home.stateVersion = "23.05";
               imports = builtins.attrValues homeManagerModules;
               programs.home-manager.enable = true;
               modules.cli.enable = true;

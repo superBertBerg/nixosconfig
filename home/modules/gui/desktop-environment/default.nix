@@ -29,6 +29,7 @@
               # "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 firefox";
               "${mod}+c" = "exec chromium";
               "${mod}+Return" = "exec alacritty";
+              "${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 000000'";
             };
             colors = with config.theme.base16.colors; {
               focused = {
@@ -128,7 +129,7 @@
         ];
         settings = {
           theme = {
-            name = "nord-dark";
+            # name = "nord-dark";
             overrides = {
               # alternating_tint_bg = "#${base00.hex.rgb}";
               # alternating_tint_fg = "#${base07.hex.rgb}";

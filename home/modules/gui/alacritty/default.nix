@@ -12,7 +12,7 @@
           multiplier = 5;
         };
         custom_cursor_colors = false;
-        background_opacity = builtins.fromJSON alpha;
+        window.opacity = builtins.fromJSON alpha;
         font.size = 14;
         font.normal.family = fontname;
         font.ligatures = true;
