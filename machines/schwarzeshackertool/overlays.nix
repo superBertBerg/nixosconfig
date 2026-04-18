@@ -1,1 +1,0 @@
-{ nixpkgs-unstable }: [ (final: prev: { }) ]

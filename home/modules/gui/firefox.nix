@@ -17,7 +17,6 @@
             "browser.tabs.closeWindowWithLastTab" = true;
             "browser.tabs.tabMinWidth" = 30;
             "browser.urlbar.speculativeConnect.enabled" = false;
-            "devtools.theme" = "${config.theme.base16.kind}";
             "dom.battery.enabled" = false;
             "dom.event.clipboardevents.enabled" = false;
             "extensions.pocket.enabled" = false;

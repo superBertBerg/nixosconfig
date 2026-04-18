@@ -10,9 +10,6 @@
       desktop-environment.enable = true;
       firefox.enable = true;
     };
-    home.packages = with nixpkgs-unstable.pkgs; [
-      rnix-lsp
-    ];
     programs.vscode.enable = true;
   };
 

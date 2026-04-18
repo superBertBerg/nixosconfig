@@ -7,10 +7,8 @@
   nixpkgs.config.allowUnfree = true;
 
   nix = {
-    package = pkgs.nixUnstable;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-    '';
+    package = pkgs.nix;
+    settings.experimental-features = [ "nix-command" "flakes" ];
     settings.auto-optimise-store = true;
   };
 
@@ -21,9 +19,9 @@
   # boot.extraModulePackages = [ config.boot.kernelPackages.v4l2loopback ];
   # boot.kernelModules = [ "v4l2loopback" ];
 
-  boot.tmp.useTmpfs = true;
+  boot.tmp.useTmpfs = false;
 
-  system.stateVersion = "20.11";
+  system.stateVersion = "23.05";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_IE.UTF-8";
@@ -33,14 +31,12 @@
   # Set your time zone.
   time.timeZone = "Europe/Berlin";
   # services.timesyncd.enable = false;
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
     # Enable 32-bit dri support for steam
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages32 = with pkgs.pkgsi686Linux; [ libva ];
-    setLdLibraryPath = true;
   };
-
   # Enable audio
   # Not strictly required but pipewire will use rtkit if it is present
   security.rtkit.enable = true;
@@ -163,7 +159,8 @@
   # List of systemwide services
 
   virtualisation.docker.enable = true;
-  virtualisation.docker.enableNvidia = true;
+  hardware.nvidia.open = true;
+  hardware.nvidia-container-toolkit.enable = true;
   # virtualisation.virtualbox.host = {
   #   enable = true;
   #   enableHardening = false;
@@ -178,16 +175,13 @@
 
   # Enable the X11 windowing system.
   services.autorandr.enable = true;
-
+  services.displayManager.defaultSession = "none+i3";
   services.xserver = {
     enable = true;
     autoRepeatInterval = 15;
     autoRepeatDelay = 300;
-    # Enable touchpad support.
-    libinput.enable = true;
     # Use session defined in home.nix
     displayManager = {
-      defaultSession = "none+i3";
       # this prevents accidentally turned on caps lock in the login manager (as it is remapped in the xmonad session to escape)
       sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap -e 'clear Lock'";
     };
@@ -204,6 +198,14 @@
       ];
     };
   };
+
+  # nix.settings = {
+  #   substituters = [ "https://cosmic.cachix.org/" ];
+  #   trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
+  # };
+
+  # services.desktopManager.cosmic.enable = true;
+  # services.displayManager.cosmic-greeter.enable = true;
 
   # Thunderbolt section
   # services.udev.extraRules = ''ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"'';
@@ -238,7 +240,6 @@
       "dialout"
       "networkmanager"
       "systemd-journal"
-      "adbusers"
       "video"
       "power"
       "wheel" # Enable ‘sudo’ for the user.
@@ -253,11 +254,8 @@
 
   programs.fish.enable = true;
 
-  programs.adb.enable = true;
-
   programs.gnupg.agent = {
     enable = true;
-    pinentryFlavor = "curses";
   };
 
   programs.steam.enable = true;
@@ -266,14 +264,16 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; let unstable = nixpkgs-unstable.pkgs; in
   [
+    nix
     # DEVELOPMENT
     ## compilers and dev environment
     # clang_10 # conflicts with gcc
+    claude-code
     conda
-    python39Full
-    python39Packages.pip
-    python39Packages.setuptools
-    gcc10
+    python3
+    python3Packages.pip
+    python3Packages.setuptools
+    gcc
     gdb
     meson
     cmake
@@ -281,13 +281,13 @@
     git-secret
     git-crypt
     php
-    nodePackages.pnpm
+    pnpm
     # nodejs_latest
     # nodejs-16_x
     nodejs
     rustup
     steam-run
-    dbeaver
+    dbeaver-bin
     jdk
     tcpflow
     remmina
@@ -303,7 +303,7 @@
     ripgrep
     fd
     tokei
-    du-dust
+    dust
     bandwhich
     unzip
     zip
@@ -311,15 +311,15 @@
     p7zip
     ranger
     hasura-cli
-    aria
+    aria2
     # hasura-graphql-engine
-    ventoy-bin
-    hdparm
-    woeusb
-    wget
-    lsof
-    git-lfs
-    wireguard-tools
+    # ventoy-bin
+    # hdparm
+    # woeusb
+    # wget
+    # lsof
+    # git-lfs
+    # wireguard-tools
 
     # AUDIO
     pavucontrol
@@ -327,7 +327,7 @@
 
     # COMMUNICATION
     signal-desktop
-    unstable.tdesktop
+    telegram-desktop
     discord
     slack
     v4l-utils
@@ -336,20 +336,19 @@
     chromium
     firefox
     google-chrome
-    tor-browser-bundle-bin
+    # tor-browser-bundle-bin
 
     # XORG/DESKTOP ENVIRONMENT
     dmenu
     wmctrl
     xorg.xev
-    xorg.xinit
-    xorg.xmessage
-    xorg.xkill
-    xorg.xwininfo
+    xinit
+    xmessage
+    xkill
+    xwininfo
     arandr
     feh
     pcmanfm
-    minecraft
     flameshot
     gimp
 
@@ -378,5 +377,5 @@
     qbittorrent
   ];
 
-  fonts.fonts = with pkgs; [ nerdfonts google-fonts ];
+  fonts.packages = with pkgs; [ nerd-fonts.jetbrains-mono google-fonts ];
 }
