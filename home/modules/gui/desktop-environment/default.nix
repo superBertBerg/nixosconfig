@@ -65,6 +65,7 @@
     # KDE/GTK specific
 
     gtk.enable = true;
+    gtk.gtk4.theme = null;
 
     qt = {
       enable = true;

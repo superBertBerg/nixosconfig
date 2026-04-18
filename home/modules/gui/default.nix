@@ -1,5 +1,5 @@
 # This module enables all personal X.org desktop environment related stuff for home-manager
-{ nixpkgs-unstable }:
+{ }:
 { pkgs, lib, config, ... }:
 {
   options.modules.gui.enable = lib.mkEnableOption "Enable all personal gui configurations";

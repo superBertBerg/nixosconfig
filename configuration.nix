@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running ‘nixos-help’).
 
-{ config, pkgs, options, lib, nixpkgs-unstable, ... }:
+{ config, pkgs, options, lib, ... }:
 {
   nixpkgs.config.allowUnfree = true;
 
@@ -175,7 +175,6 @@
 
   # Enable the X11 windowing system.
   services.autorandr.enable = true;
-  services.displayManager.defaultSession = "none+i3";
   services.xserver = {
     enable = true;
     autoRepeatInterval = 15;
@@ -199,13 +198,8 @@
     };
   };
 
-  # nix.settings = {
-  #   substituters = [ "https://cosmic.cachix.org/" ];
-  #   trusted-public-keys = [ "cosmic.cachix.org-1:Dya9IyXD4xdBehWjrkPv6rtxpmMdRel02smYzA85dPE=" ];
-  # };
-
-  # services.desktopManager.cosmic.enable = true;
-  # services.displayManager.cosmic-greeter.enable = true;
+  services.desktopManager.cosmic.enable = true;
+  services.displayManager.cosmic-greeter.enable = true;
 
   # Thunderbolt section
   # services.udev.extraRules = ''ACTION=="add", SUBSYSTEM=="thunderbolt", ATTR{authorized}=="0", ATTR{authorized}="1"'';
@@ -262,12 +256,10 @@
 
   # List packages installed in system profile. To search, run:
   # $ nix search wget
-  environment.systemPackages = with pkgs; let unstable = nixpkgs-unstable.pkgs; in
-  [
+  environment.systemPackages = with pkgs; [
     nix
     # DEVELOPMENT
     ## compilers and dev environment
-    # clang_10 # conflicts with gcc
     claude-code
     conda
     python3
@@ -290,7 +282,6 @@
     dbeaver-bin
     jdk
     tcpflow
-    remmina
     postgresql
 
     # TERMINAL/CLI
@@ -339,23 +330,17 @@
     # tor-browser-bundle-bin
 
     # XORG/DESKTOP ENVIRONMENT
-    dmenu
-    wmctrl
-    xorg.xev
-    xinit
+    xev
+    xorg.xinit
     xmessage
     xkill
     xwininfo
-    arandr
-    feh
     pcmanfm
-    flameshot
     gimp
 
     # MISC
     exfat
     gsettings-desktop-schemas
-    appimage-run
     ntfs3g
     acpi
     appimage-run
@@ -366,13 +351,10 @@
     memtester
     docker-compose
     filezilla
-    scrot
-    feh # to view images in terminal
     smartmontools
     rdfind
     rage
     imagemagick
-    xclip
     gparted
     qbittorrent
   ];

@@ -5,20 +5,25 @@
   config = lib.mkIf config.modules.cli.git.enable {
     programs.git = {
       enable = true;
-      userName = "Robert Mildenberger";
-      userEmail = "superbertberg@gmail.com";
       lfs.enable = true;
-      delta.enable = true;
-      extraConfig = {
+      signing.format = null;
+      settings = {
+        user.name = "Robert Mildenberger";
+        user.email = "superbertberg@gmail.com";
         pull.rebase = false;
         core.editor = "code";
         # rebase.autostash = true;
         # rerere.enabled = true;
       };
-      # extraConfig.init.defaultBranch = "main";
+      # settings.init.defaultBranch = "main";
       # aliases = {
       #   pushall = "!git remote | xargs -L1 git push --all";
       # };
+    };
+
+    programs.delta = {
+      enable = true;
+      enableGitIntegration = true;
     };
   };
 }

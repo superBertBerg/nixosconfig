@@ -5,7 +5,10 @@
   config = lib.mkIf config.modules.cli.ssh.enable {
     programs.ssh = {
       enable = true;
-      serverAliveInterval = 240;
+      enableDefaultConfig = false;
+      matchBlocks."*" = {
+        serverAliveInterval = 240;
+      };
       # TODO whitelist this for only a selected number of hosts
       # extraConfig = ''
       #   ForwardX11 yes
