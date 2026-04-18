@@ -12,6 +12,7 @@
         user.email = "superbertberg@gmail.com";
         pull.rebase = false;
         core.editor = "code";
+        url."git@github.com:".insteadOf = "https://github.com/";
         # rebase.autostash = true;
         # rerere.enabled = true;
       };
