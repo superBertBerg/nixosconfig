@@ -27,7 +27,6 @@
       enable = true;
       backend = "glx";
       # vSync = true;
-      experimentalBackends = true;
     };
   # services.sanoid =
   #   let

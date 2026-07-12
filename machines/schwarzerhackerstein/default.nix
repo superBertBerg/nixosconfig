@@ -35,5 +35,8 @@
       vSync = true;
     };
 
+  hardware.nvidia.open = true;
+  hardware.nvidia-container-toolkit.enable = true;
+
   services.thermald.enable = true;
 }

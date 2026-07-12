@@ -58,7 +58,7 @@
     allowedTCPPorts = [ 25565 5020 9695 3000 8020 8060 8000 5432 ];
     allowedUDPPorts = [ 51820 ]; # Clients and peers can use the same port, see listenport
   };
-  networking.extraHosts = 
+  networking.extraHosts =
   ''
   127.0.0.1       localhost            fusionauth            minio        user-management            hasura-functions            hasura
   '';
@@ -104,7 +104,7 @@
   #     address = [ "10.0.0.2/24" "fdc9:281f:04d7:9ee9::2/64" ];
   #     dns = [ "10.0.0.1" "fdc9:281f:04d7:9ee9::1" ];
   #     privateKeyFile = "/home/robert/wireguard-keys/private";
-      
+
   #     peers = [
   #       {
   #         publicKey = "vul6wXx0RaykQvPDgwGBmykntvCt+kk6TCiY6GWEZig=";
@@ -159,8 +159,17 @@
   # List of systemwide services
 
   virtualisation.docker.enable = true;
-  hardware.nvidia.open = true;
-  hardware.nvidia-container-toolkit.enable = true;
+
+  # KVM/QEMU with libvirt (virsh)
+  virtualisation.libvirtd = {
+    enable = true;
+    qemu = {
+      package = pkgs.qemu_kvm;
+      runAsRoot = true;
+      swtpm.enable = true;  # TPM emulation if needed
+    };
+  };
+  programs.virt-manager.enable = true;
   # virtualisation.virtualbox.host = {
   #   enable = true;
   #   enableHardening = false;
@@ -238,6 +247,7 @@
       "power"
       "wheel" # Enable ‘sudo’ for the user.
       "docker"
+      "libvirtd"
       "python"
     ];
     # openssh.authorizedKeys.keys = [ "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDG/win3mLJzRYDTiMDBRaTQxOXugxEz9WOoaGlTnUm4eQrwNt+WFMoE9keiGyx0/107XqfQMaAE2PBvUEPL5R5CD9H04AVXTjD1Eo7/3rTi5nZPq9pwXhWNvzoqGYAZWT+NDUOn1aJTCQ4a1xPU7gmOSd6e2GPSy+TbqN+CWVf1vbNVTrGJpMqcu4cIA163mFwC8X+cbtYt3ZL7ZwTx9V9WWDrrOwKKUorRx4Ek6NC0/SC0pcvLNCOArKfsFPdL32/pL+HBW19T9w2nhSalkEgTHRFX+dPliEmwGGEGsJTDwABZCdAyArmLReksputEl14Q/2+I2UAWgzRbkoeVEHcOJ05+vM1lnHa/fnocrExMSbNjW6RhHe4jiTqYCl1i2Kq3v8F//AF+DZlJOVSf9m0/doPA2PdJssAN4IBsRj6tWkjoA94EODGTsSntW36YCDduWu4k8iVtEwTkaEJ/Y71cw2ds2tYhTYqmgaI3JblciWnndrxzklRNi1cxBIyUUn52W1mhv1GIWOIvnOFHrJU+i81+muQXkpuoIkB1hbLkTCpbx6uLuuu18eqWx8In0/L9dkh1LjJ1n5aXMr26F5xeOSewNUQglXYxcbevDL1lBW9sYL0eizNHVsI7xl/q7rxgQb1gKcfqZNpIBZvmHai20TgW1eP9T8H070nI6FJuQ== philm@philipp-m.com"];
@@ -269,6 +279,7 @@
     gdb
     meson
     cmake
+    gh
     git
     git-secret
     git-crypt
@@ -277,6 +288,7 @@
     # nodejs_latest
     # nodejs-16_x
     nodejs
+    go
     rustup
     steam-run
     dbeaver-bin

@@ -11,7 +11,7 @@
       firefox.enable = true;
     };
     programs.vscode.enable = true;
-    home.packages = [ pkgs.zed-editor pkgs.nixd pkgs.bun pkgs.typescript-language-server pkgs.rust-analyzer pkgs.sqls ];
+    home.packages = [ pkgs.zed-editor pkgs.nixd pkgs.bun pkgs.typescript-language-server pkgs.rust-analyzer pkgs.gopls pkgs.sqls ];
   };
 
 }
