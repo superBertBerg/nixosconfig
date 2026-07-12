@@ -6,8 +6,8 @@
     programs.ssh = {
       enable = true;
       enableDefaultConfig = false;
-      matchBlocks."*" = {
-        serverAliveInterval = 240;
+      settings."*" = {
+        ServerAliveInterval = 240;
       };
       # TODO whitelist this for only a selected number of hosts
       # extraConfig = ''

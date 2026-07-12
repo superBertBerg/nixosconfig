@@ -4,6 +4,7 @@
   nix.settings.max-jobs = lib.mkDefault 8;
 
   boot.supportedFilesystems = [ "zfs" ];
+  boot.zfs.forceImportRoot = false;
   hardware.enableRedistributableFirmware = true;
 
   networking = {

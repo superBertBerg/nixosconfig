@@ -343,7 +343,7 @@
 
     # XORG/DESKTOP ENVIRONMENT
     xev
-    xorg.xinit
+    xinit
     xmessage
     xkill
     xwininfo
