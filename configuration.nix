@@ -163,10 +163,14 @@
   # KVM/QEMU with libvirt (virsh)
   virtualisation.libvirtd = {
     enable = true;
+    onBoot = "ignore";       # never auto-resume guests on host boot — always start them manually
+    onShutdown = "shutdown"; # cleanly power guests down together with the host
     qemu = {
       package = pkgs.qemu_kvm;
       runAsRoot = true;
-      swtpm.enable = true;  # TPM emulation if needed
+      swtpm.enable = true;   # TPM emulation if needed
+      # OVMF/UEFI firmware for guests is available by default on NixOS 26.05
+      vhostUserPackages = [ pkgs.virtiofsd ];  # lets libvirt launch virtiofsd for shared folders (virtiofs)
     };
   };
   programs.virt-manager.enable = true;
@@ -268,6 +272,102 @@
   # $ nix search wget
   environment.systemPackages = with pkgs; [
     nix
+
+    # VIRTUALISATION (libvirt/QEMU clients + helper to spin up an Ubuntu VM)
+    virt-viewer                        # graphical console for guests (`virt-viewer <name>`)
+    (let
+      virsh = "${pkgs.libvirt}/bin/virsh";
+      virtInstall = "${pkgs.virt-manager}/bin/virt-install";
+    in pkgs.writeShellScriptBin "ubuntu-vm-create" ''
+      set -euo pipefail
+
+      # Usage: ubuntu-vm-create [name]     (default name: ubuntu)
+      #   Override the ISO with:  ISO_URL=<url> ubuntu-vm-create
+      NAME="''${1:-ubuntu}"
+      ISO_URL="''${ISO_URL:-https://releases.ubuntu.com/24.04/ubuntu-24.04.3-live-server-amd64.iso}"
+      VM_DIR="$HOME/vms"
+      ISO="$VM_DIR/$(basename "$ISO_URL")"
+      DISK="$VM_DIR/$NAME.qcow2"
+      DISK_SIZE="''${DISK_SIZE:-40}"   # GiB (override: DISK_SIZE=100 ubuntu-vm-create)
+      CONNECT="qemu:///system"
+
+      # Give the guest half the host's cores and half its RAM.
+      VCPUS=$(( $(nproc) / 2 ))
+      MEM_MB=$(${pkgs.gawk}/bin/awk '/MemTotal/ {print int($2 / 1024 / 2)}' /proc/meminfo)
+
+      echo ">> VM '$NAME': $VCPUS vCPUs, $MEM_MB MiB RAM, $DISK_SIZE GiB disk"
+
+      if ${virsh} --connect "$CONNECT" dominfo "$NAME" >/dev/null 2>&1; then
+        echo "!! A domain named '$NAME' already exists."
+        echo "   Start it with:  virsh --connect $CONNECT start $NAME"
+        exit 1
+      fi
+
+      mkdir -p "$VM_DIR"
+
+      # Ensure the default NAT network exists, is running and autostarts.
+      if ! ${virsh} --connect "$CONNECT" net-info default >/dev/null 2>&1; then
+        echo ">> Defining libvirt 'default' NAT network"
+        TMPXML="$(mktemp)"
+        cat > "$TMPXML" <<'EOF'
+      <network>
+        <name>default</name>
+        <forward mode='nat'/>
+        <bridge name='virbr0' stp='on' delay='0'/>
+        <ip address='192.168.122.1' netmask='255.255.255.0'>
+          <dhcp>
+            <range start='192.168.122.2' end='192.168.122.254'/>
+          </dhcp>
+        </ip>
+      </network>
+      EOF
+        ${virsh} --connect "$CONNECT" net-define "$TMPXML"
+        rm -f "$TMPXML"
+      fi
+      ${virsh} --connect "$CONNECT" net-start default 2>/dev/null || true
+      ${virsh} --connect "$CONNECT" net-autostart default 2>/dev/null || true
+
+      # Download the ISO once.
+      if [ ! -f "$ISO" ]; then
+        echo ">> Downloading $ISO_URL"
+        ${pkgs.aria2}/bin/aria2c -x 8 -s 8 -d "$VM_DIR" -o "$(basename "$ISO_URL")" "$ISO_URL"
+      fi
+
+      echo ">> Creating the VM and booting the installer"
+      ${virtInstall} \
+        --connect "$CONNECT" \
+        --name "$NAME" \
+        --vcpus "$VCPUS" \
+        --memory "$MEM_MB" \
+        --cpu host-passthrough \
+        --cdrom "$ISO" \
+        --disk path="$DISK",size="$DISK_SIZE",format=qcow2,bus=virtio \
+        --osinfo detect=on,name=ubuntu24.04 \
+        --graphics spice \
+        --video virtio \
+        --network network=default,model=virtio \
+        --boot uefi \
+        --noautoconsole
+
+      cat <<EOF
+
+      VM '$NAME' created (persistent; it will NOT autostart with the host).
+
+      Open the console and run the Ubuntu installer:
+        virt-viewer --connect $CONNECT $NAME      # or just use virt-manager
+
+      Everyday control:
+        virsh --connect $CONNECT start    $NAME    # start it manually
+        virsh --connect $CONNECT shutdown $NAME    # graceful power off
+        virsh --connect $CONNECT destroy  $NAME    # force power off
+        virsh --connect $CONNECT list --all        # list all VMs
+
+      Delete it completely:
+        virsh --connect $CONNECT undefine --nvram $NAME
+        rm -f "$DISK"
+      EOF
+    '')
+
     # DEVELOPMENT
     ## compilers and dev environment
     claude-code
