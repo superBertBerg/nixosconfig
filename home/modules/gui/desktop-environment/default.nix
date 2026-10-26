@@ -25,6 +25,8 @@
               inner = 10;
             };
             keybindings = lib.mkOptionDefault {
+              # CapsLock+s — keyd rewrites that chord to Ctrl+Alt+Super+s (see services.keyd)
+              "Ctrl+Mod1+Mod4+s" = "exec ${pkgs.dictate}/bin/dictate";
               "${mod}+space" = "exec rofi -show run";
               # "${mod}+c" = "exec env MOZ_USE_XINPUT2=1 firefox";
               "${mod}+c" = "exec chromium";
@@ -32,6 +34,11 @@
               "${mod}+Shift+x" = "exec sh -c '${pkgs.i3lock}/bin/i3lock -c 000000'";
             };
             
+            startup = [{ command = "${pkgs.handy}/bin/handy --start-hidden"; }];
+
+            # Keep the hns fallback popup floating when launched manually.
+            floating.criteria = [{ class = "hns-dictation"; }];
+
             bars = [
               {
                 position = "bottom";

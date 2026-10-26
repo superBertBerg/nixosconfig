@@ -19,22 +19,8 @@
     nameservers = [ "1.1.1.1"];
   
   };
-  services.xserver = {
-    videoDrivers = ["nvidia"];
-    screenSection = ''
-      Option         "metamodes" "nvidia-auto-select +0+0 {ForceFullCompositionPipeline=On}"
-      Option         "AllowIndirectGLXProtocol" "off"
-      Option         "TripleBuffer" "on"
-    '';
-  };
-  # Against Tearing
-  services.picom =
-    {
-      enable = true;
-      # unredir-if-possible = false;
-      backend = "glx"; # try "glx" if xrender doesn't help
-      vSync = true;
-    };
+  # Installs the NVIDIA driver; still required under Wayland (COSMIC) for XWayland.
+  services.xserver.videoDrivers = ["nvidia"];
 
   hardware.nvidia.open = true;
   hardware.nvidia-container-toolkit.enable = true;

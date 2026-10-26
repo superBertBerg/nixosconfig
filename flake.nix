@@ -1,6 +1,9 @@
 {
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
+    # Tracks nixpkgs master so fast-moving tools (e.g. claude-code) can be
+    # overlaid with a newer build than the 26.05 stable branch ships.
+    nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -25,6 +28,7 @@
         gui = import ./home/modules/gui { }; # enables all modules in the gui directory + small extra ones
         firefox = import ./home/modules/gui/firefox.nix { };
         alacritty = import ./home/modules/gui/alacritty { };
+        cosmic = import ./home/modules/gui/cosmic.nix { };
         desktop-environment = import ./home/modules/gui/desktop-environment { };
       };
 
@@ -33,6 +37,20 @@
         modules = [
           home-manager.nixosModules.home-manager
           {
+            nixpkgs.overlays = [
+              (final: prev:
+                let
+                  unstable = import inputs.nixpkgs-unstable {
+                    inherit system;
+                    config.allowUnfree = true;
+                  };
+                in
+                {
+                  claude-code = unstable.claude-code;
+                  codex = unstable.codex;
+                  handy = unstable.handy;
+                })
+            ];
             home-manager.useUserPackages = true;
             home-manager.useGlobalPkgs = true;
             home-manager.users.robert = {

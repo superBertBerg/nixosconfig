@@ -6,6 +6,16 @@
 {
   nixpkgs.config.allowUnfree = true;
 
+  # CapsLock+s toggles Handy recording in both i3 and COSMIC.
+  # Handy transcribes locally and pastes into the focused application.
+  nixpkgs.overlays = [
+    (final: prev: {
+      dictate = final.writeShellScriptBin "dictate" ''
+        exec ${final.handy}/bin/handy --toggle-transcription
+      '';
+    })
+  ];
+
   nix = {
     package = pkgs.nix;
     settings.experimental-features = [ "nix-command" "flakes" ];
@@ -160,6 +170,25 @@
 
   virtualisation.docker.enable = true;
 
+  # Caps Lock is remapped at the evdev level by keyd, so it behaves the same in
+  # X11/i3, Wayland/COSMIC and on a bare TTY. It no longer toggles Lock at all:
+  # held, it opens the "dictation" layer, where 's' emits Ctrl+Alt+Super+s — the
+  # chord both window managers bind to `dictate`. Tapping Caps alone does nothing.
+  #
+  # Not F13: keycode 183/F13 is mapped to the XF86Tools keysym by xkeyboard-config's
+  # inet(evdev) symbols, which every pc model includes, so a "F13" binding never
+  # matches. A plain modifier chord avoids that whole class of surprise.
+  services.keyd = {
+    enable = true;
+    keyboards.default = {
+      ids = [ "*" ];
+      settings = {
+        main.capslock = "layer(dictation)";
+        dictation.s = "C-A-M-s";
+      };
+    };
+  };
+
   # KVM/QEMU with libvirt (virsh)
   virtualisation.libvirtd = {
     enable = true;
@@ -174,6 +203,23 @@
     };
   };
   programs.virt-manager.enable = true;
+
+  # Lets dynamically-linked non-Nix binaries (e.g. plain `cargo build` output)
+  # find a loader/shared libs. Without this, running them fails with
+  # "cannot execute: required file not found" since NixOS has no /lib64/ld-linux.
+  programs.nix-ld.enable = true;
+  programs.nix-ld.libraries = with pkgs; [
+    libGL
+    xorg.libX11
+    xorg.libXcursor
+    xorg.libXi
+    xorg.libXrandr
+    xorg.libXext
+    libxkbcommon
+    wayland
+    alsa-lib
+    vulkan-loader
+  ];
   # virtualisation.virtualbox.host = {
   #   enable = true;
   #   enableHardening = false;
@@ -193,10 +239,6 @@
     autoRepeatInterval = 15;
     autoRepeatDelay = 300;
     # Use session defined in home.nix
-    displayManager = {
-      # this prevents accidentally turned on caps lock in the login manager (as it is remapped in the xmonad session to escape)
-      sessionCommands = "${pkgs.xorg.xmodmap}/bin/xmodmap -e 'clear Lock'";
-    };
     windowManager = {
       session = [
         {
@@ -368,9 +410,21 @@
       EOF
     '')
 
+    # SPEECH TO TEXT
+    handy               # offline dictation GUI, with model selection and transcript history
+    dictate             # CapsLock+s entry point (see the overlay at the top of this file)
+    wtype               # Handy typing/paste shortcuts on Wayland
+    xdotool             # Handy typing/paste shortcuts on X11
+    keyd                # so `sudo keyd monitor` / `keyd listen` are available when a chord misbehaves
+    hns                 # push-to-talk dictation: record mic -> whisper -> clipboard
+    xclip               # clipboard backend hns/pyperclip needs on X11
+    wl-clipboard        # ... and the one it needs on Wayland/COSMIC
+    whisper-cpp-vulkan  # standalone whisper CLI (whisper-cli/-stream/-server), GPU-accelerated
+
     # DEVELOPMENT
     ## compilers and dev environment
     claude-code
+    codex
     conda
     python3
     python3Packages.pip

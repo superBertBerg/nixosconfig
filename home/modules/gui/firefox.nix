@@ -43,10 +43,6 @@
             "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
             "widget.content.gtk-theme-override" = "Adwaita:light";
             "dom.webgpu.enabled" = true;
-            "gfx.webrender.all" = true;
-            "gfx.webrender.compositor" = true;
-            "gfx.webrender.compositor.force-enabled" = true;
-            "media.gpu-process-decoder" = true;
             "svg.context-properties.content.enabled" = true;
           };
         };
